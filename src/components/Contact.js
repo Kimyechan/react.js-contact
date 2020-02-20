@@ -26,6 +26,28 @@ export default class Contact extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
     }
 
+    componentWillMount() {
+        const contactData = localStorage.contactData;   
+        const nextId = localStorage.nextId;
+
+        if(contactData) {
+            this.setState({
+                contactData: JSON.parse(contactData),
+                nextId
+            })
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(JSON.stringify(prevState.contactData) != JSON.stringify(this.state.contactData)) {
+            localStorage.contactData = JSON.stringify(this.state.contactData);
+        }
+
+        if(prevState.nextId !== this.state.nextId){
+            localStorage.nextId = this.state.nextId;
+        }
+    }
+    
     handleChange(e) {
         this.setState({
             keyword: e.target.value
